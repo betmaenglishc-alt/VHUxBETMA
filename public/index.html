@@ -1,0 +1,65 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BETMA CHALLENGE</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&display=swap"><link rel="stylesheet" href="style.css">
+<style>
+main{max-width:560px;margin:0 auto;padding:20px 20px 40px;min-height:100vh;display:flex;flex-direction:column}
+.top{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:14px;padding-bottom:14px}.top b{color:var(--red)}
+.screen{display:none;flex:1;flex-direction:column;justify-content:center;animation:in .3s}.screen.on{display:flex}@keyframes in{from{opacity:0;transform:translateY(8px)}}
+.hero h1{font-size:clamp(44px,13vw,76px);font-weight:800;color:var(--red)}.hero p{font-size:19px;margin:18px 0 30px;max-width:30ch}
+h2{font-size:28px;font-weight:800}.sub{color:var(--mute);margin:8px 0 22px}
+label{display:block;font-weight:600;font-size:14px;margin-top:12px;margin-bottom:6px}.chk{display:flex;gap:10px;font-size:13px;font-weight:400;margin-top:16px;color:var(--mute)}.chk input{width:20px;height:20px;flex:none;accent-color:var(--red)}
+.bar{height:8px;background:var(--card);border-radius:8px;overflow:hidden}.bar i{display:block;height:100%;background:var(--red);transition:width .4s}
+.cnt{display:flex;justify-content:space-between;font-weight:800;margin:14px 0 8px}
+.pic{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:14px;background:var(--card);margin:6px 0 14px}
+.opt{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:var(--card);border:2px solid transparent;border-radius:12px;padding:13px 14px;margin-bottom:9px;cursor:pointer;font-weight:600}
+.opt span{flex:none;width:30px;height:30px;border-radius:8px;background:#fff;display:grid;place-items:center;font-weight:800}
+.opt.sel{border-color:var(--red);background:#fff}.opt.sel span{background:var(--red);color:#fff}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}.opt.ok span{background:var(--ok);color:#fff}.opt.no{border-color:var(--bad);background:var(--badbg)}.opt.no span{background:var(--bad);color:#fff}
+.fb{font-weight:800;min-height:26px;margin:4px 0 10px}.fb.ok{color:var(--ok)}.fb.no{color:var(--bad)}
+.score{font-size:clamp(90px,28vw,150px);font-weight:800;color:var(--red);line-height:1}.score small{font-size:.35em;color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0}.stats div{background:var(--card);border-radius:12px;padding:14px}.stats b{display:block;font-size:22px}.stats span{font-size:12px;color:var(--mute)}
+.col{display:grid;gap:10px;margin-top:6px}.rv{background:var(--card);border-radius:12px;padding:12px;margin-bottom:10px;font-size:14px}.rv img{width:100%;border-radius:8px}.rv .a{padding:4px 8px;border-radius:6px;margin-top:4px}
+</style></head><body><main>
+<div class="top"><div>BETMA <b>CHALLENGE</b></div><div id="code"></div></div>
+<section class="screen on" id="s-welcome"><div class="hero"><h1>BETMA CHALLENGE</h1><p>10 câu hỏi – 1 thử thách – Bạn đạt bao nhiêu điểm?</p><button class="btn" onclick="show('s-reg')">BẮT ĐẦU NGAY</button></div></section>
+<section class="screen" id="s-reg"><h2>THÔNG TIN NGƯỜI CHƠI</h2><p class="sub">Điền nhanh thông tin để bắt đầu thử thách!</p>
+<div><label for="name">Họ và tên</label><input id="name" autocomplete="name"><div class="err" id="e-name"></div>
+<label for="phone">Số điện thoại</label><input id="phone" type="tel" inputmode="tel" autocomplete="tel"><div class="err" id="e-phone"></div>
+<label for="email">Email</label><input id="email" type="email" autocomplete="email"><div class="err" id="e-email"></div>
+<label for="year">Sinh viên năm</label><select id="year"><option value="">Chọn…</option><option>Năm 1</option><option>Năm 2</option><option>Năm 3</option><option>Năm 4</option><option>Khác</option></select><div class="err" id="e-year"></div>
+<label class="chk"><input type="checkbox" id="consent"><span>Tôi đồng ý để BETMA ENGLISH thu thập và xử lý thông tin cá nhân của tôi nhằm mục đích tổ chức thử thách và liên hệ tư vấn.</span></label><div class="err" id="e-consent"></div></div>
+<button class="btn" id="go" onclick="register()" style="margin-top:10px">BẮT ĐẦU THỬ THÁCH</button></section>
+<section class="screen" id="s-game"><div class="cnt"><span id="num"></span><span style="color:var(--red)">BETMA</span></div><div class="bar"><i id="prog"></i></div>
+<img class="pic" id="pic" alt="Hình minh họa của câu hỏi"><div id="opts" role="radiogroup" aria-label="Chọn mô tả chính xác nhất"></div><div class="fb" id="fb" aria-live="polite"></div><button class="btn" id="confirm" onclick="confirmAns()" disabled>XÁC NHẬN</button></section>
+<section class="screen" id="s-result"><h2>CHALLENGE COMPLETED!</h2><div class="score" id="rs"></div><h3 id="msg" style="margin-top:14px"></h3>
+<div class="stats"><div><b id="rc"></b><span>Câu đúng</span></div><div><b id="rw"></b><span>Câu sai</span></div><div><b id="rp"></b><span>Tỷ lệ đúng</span></div></div><p class="sub" style="margin:-8px 0 18px">Thời gian hoàn thành: <b id="rt"></b></p>
+<div class="col"><button class="btn" onclick="review()">XEM ĐÁP ÁN</button><button class="btn ghost" onclick="again()">CHƠI LẠI</button><button class="btn ghost" onclick="finish()">HOÀN TẤT</button></div></section>
+<section class="screen" id="s-review"><h2>ĐÁP ÁN</h2><div id="rvl" style="margin:18px 0"></div><button class="btn" onclick="show('s-result')">QUAY LẠI KẾT QUẢ</button></section>
+<section class="screen" id="s-thanks"><div class="hero"><h1>CẢM ƠN BẠN!</h1><p>Đội ngũ BETMA ENGLISH sẽ sớm liên hệ với bạn.</p><button class="btn" onclick="reset()">NGƯỜI CHƠI MỚI</button></div></section>
+</main><script>
+const $=id=>document.getElementById(id);let T=null,Q=null,sel=null,locked=false;
+const STORE='betma_token';
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));scrollTo(0,0)}
+async function api(u,b){const r=await fetch(u,b?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}:{});const d=await r.json();if(!r.ok)throw d;return d}
+async function register(){['name','phone','email','year','consent'].forEach(k=>$('e-'+k).textContent='');$('go').disabled=true;
+try{const d=await api('/api/register',{name:$('name').value,phone:$('phone').value,email:$('email').value,year:$('year').value,consent:$('consent').checked});begin(d)}
+catch(e){Object.entries(e.errors||{error:e.error}).forEach(([k,v])=>{if($('e-'+k))$('e-'+k).textContent=v;else alert(v)})}$('go').disabled=false}
+function begin(d){T=d.token;localStorage.setItem(STORE,T);$('code').textContent='Mã: '+d.code;next()}
+async function next(){const d=await api(`/api/attempt/${T}/question`);if(d.done)return end();Q=d;sel=null;locked=false;
+$('num').textContent=String(d.index).padStart(2,'0')+'/'+String(d.total).padStart(2,'0');$('prog').style.width=(d.index-1)/d.total*100+'%';$('pic').src=d.image;$('fb').textContent='';$('fb').className='fb';
+$('opts').innerHTML=d.options.map((o,i)=>`<button class="opt" role="radio" aria-checked="false" data-i="${i}"><span>${'ABCD'[i]}</span><em style="font-style:normal"></em></button>`).join('');
+[...$('opts').children].forEach((b,i)=>{b.querySelector('em').textContent=d.options[i];b.onclick=()=>pick(i)});
+$('confirm').textContent='XÁC NHẬN';$('confirm').disabled=true;show('s-game')}
+function pick(i){if(locked)return;sel=i;[...$('opts').children].forEach((b,j)=>{b.classList.toggle('sel',i===j);b.setAttribute('aria-checked',i===j)});$('confirm').disabled=false}
+async function confirmAns(){if(locked){return next()}if(sel===null)return;locked=true;$('confirm').disabled=true;
+try{const r=await api(`/api/attempt/${T}/answer`,{questionId:Q.id,chosen:sel});const bs=[...$('opts').children];bs[r.correctIndex].classList.add('ok');
+if(!r.correct)bs[sel].classList.add('no');bs.forEach(b=>b.classList.remove('sel'));$('fb').className='fb '+(r.correct?'ok':'no');$('fb').textContent=r.correct?'✓ Chính xác! +1 điểm':'✗ Chưa đúng — đáp án đúng là '+'ABCD'[r.correctIndex];
+$('prog').style.width=Q.index/Q.total*100+'%';$('confirm').textContent=Q.index===Q.total?'XEM KẾT QUẢ':'CÂU TIẾP THEO';$('confirm').disabled=false}catch(e){alert(e.error||'Lỗi');locked=false}}
+async function end(){const r=await api(`/api/attempt/${T}/finish`,{});const s=r.score,m=s>=9?'XUẤT SẮC! Bạn đã chinh phục thử thách!':s>=7?'RẤT TỐT! Bạn đã làm rất tốt!':s>=5?'KHÁ LẮM! Hãy thử sức lần nữa!':'ĐỪNG BỎ CUỘC! Thử thách lại nhé!';
+$('rs').innerHTML=`${s}<small>/${r.total}</small>`;$('msg').textContent=m;$('rc').textContent=s;$('rw').textContent=r.total-s;$('rp').textContent=Math.round(s/r.total*100)+'%';$('rt').textContent=Math.floor(r.duration/60)+' phút '+r.duration%60+' giây';show('s-result')}
+async function review(){const d=await api(`/api/attempt/${T}/review`);const box=$('rvl');box.innerHTML='';d.forEach((x,n)=>{const e=document.createElement('div');e.className='rv';const im=document.createElement('img');im.src=x.image;im.alt='Câu '+(n+1);e.append(im);
+x.options.forEach((o,i)=>{const a=document.createElement('div');a.className='a';a.textContent='ABCD'[i]+'. '+o+(i===x.correct?'  ✓':i===x.chosen?'  ✗':'');if(i===x.correct){a.style.background='var(--okbg)'}else if(i===x.chosen){a.style.background='var(--badbg)'}e.append(a)});box.append(e)});show('s-review')}
+async function again(){begin(await api('/api/replay',{token:T}))}
+function finish(){localStorage.removeItem(STORE);show('s-thanks')}
+function reset(){location.reload()}
+(async()=>{const t=localStorage.getItem(STORE);if(t){T=t;try{const d=await api(`/api/attempt/${t}/question`);if(!d.done){return next()}}catch{localStorage.removeItem(STORE)}}})();
+</script></body></html>

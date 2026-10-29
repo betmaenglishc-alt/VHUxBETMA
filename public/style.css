@@ -1,0 +1,10 @@
+:root{--red:#D3222B;--red-d:#B01B23;--ink:#222;--bg:#fff;--card:#F5F5F5;--line:#E3E3E3;--ok:#1E8E4E;--okbg:#E6F4EC;--bad:#C0262D;--badbg:#FCE8E9;--mute:#6B6B6B}
+*{box-sizing:border-box}html,body{margin:0}body{font-family:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+button,input,select{font:inherit}h1,h2,h3{margin:0;line-height:1.1;letter-spacing:-.02em}
+.btn{display:inline-flex;justify-content:center;align-items:center;gap:8px;border:0;border-radius:10px;padding:15px 28px;font-weight:700;cursor:pointer;background:var(--red);color:#fff;font-size:16px;transition:background .15s,transform .1s}
+.btn:hover{background:var(--red-d)}.btn:active{transform:scale(.98)}.btn:disabled{background:#d9d9d9;color:#999;cursor:not-allowed}
+.btn.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--ink)}.btn.ghost:hover{background:var(--card)}.btn.sm{padding:8px 14px;font-size:14px}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+input,select{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:10px;background:#fff}input:focus,select:focus{border-color:var(--red);outline:0;box-shadow:0 0 0 3px #d3222b22}
+.err{color:var(--bad);font-size:13px;min-height:18px;margin-top:4px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
